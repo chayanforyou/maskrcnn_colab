@@ -56,7 +56,7 @@ class CustomConfig(Config):
     IMAGES_PER_GPU = 4
 
     # Number of classes
-    NUM_CLASSES = classes_number
+    NUM_CLASSES = 2
 
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
