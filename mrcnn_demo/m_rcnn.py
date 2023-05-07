@@ -102,7 +102,7 @@ class CustomDataset(utils.Dataset):
         See http://cocodataset.org/#home for more information.
     """
 
-    def load_custom(self, annotation_json, images_dir, dataset_type="train"):
+    def load_custom(self, annotation_json, images_dir):
         """ Load the coco-like dataset from json
         Args:
             annotation_json: The path to the coco annotations json file
@@ -139,16 +139,7 @@ class CustomDataset(utils.Dataset):
 
         # Get all images and add them to the dataset
         seen_images = {}
-
-        # Split the dataset, if train, get 90%, else 10%
-        len_images = len(coco_json['images'])
-        if dataset_type == "train":
-            img_range = [int(len_images / 9), len_images]
-        else:
-            img_range = [0, int(len_images / 9)]
-
-        for i in range(img_range[0], img_range[1]):
-            image = coco_json['images'][i]
+        for image in coco_json['images']:
             image_id = image['id']
             if image_id in seen_images:
                 print("Warning: Skipping duplicate image id: {}".format(image))
@@ -160,10 +151,10 @@ class CustomDataset(utils.Dataset):
                     image_height = image['height']
                 except KeyError as key:
                     print("Warning: Skipping image (id: {}) with missing key: {}".format(image_id, key))
-
+                
                 image_path = os.path.abspath(os.path.join(images_dir, image_file_name))
                 image_annotations = annotations[image_id]
-
+                
                 # Add the image using the base method from utils.Dataset
                 self.add_image(
                     source=source_name,
@@ -368,15 +359,15 @@ def display_image_samples(dataset_train):
         mask, class_ids = dataset_train.load_mask(image_id)
         visualize.display_top_masks(image, mask, class_ids, dataset_train.class_names)
 
-def load_image_dataset(annotation_path, dataset_path, dataset_type):
+def load_image_dataset(annotation_path, dataset_path):
     dataset_train = CustomDataset()
-    dataset_train.load_custom(annotation_path, dataset_path, dataset_type)
+    dataset_train.load_custom(annotation_path, dataset_path)
     dataset_train.prepare()
     return dataset_train
 
-def load_ground_truth(annotation_path, dataset_path, dataset_type):
+def load_ground_truth(annotation_path, dataset_path):
     dataset_val = CocoDataset()
-    coco = dataset_val.load_coco_gt(annotation_path, dataset_path, dataset_type)
+    coco = dataset_val.load_coco_gt(annotation_path, dataset_path)
     dataset_val.prepare()
     return coco, dataset_val
 
