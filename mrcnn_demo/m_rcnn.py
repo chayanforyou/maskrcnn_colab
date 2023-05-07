@@ -41,7 +41,7 @@ if not os.path.exists(COCO_MODEL_PATH):
 
 class CustomConfig(Config):
     def __init__(self, num_classes):
-        classes_number = num_classes
+        self.NUM_CLASSES = num_classes
         super().__init__()
     """Configuration for training on the toy shapes dataset.
     Derives from the base Config class and overrides values specific
@@ -54,9 +54,6 @@ class CustomConfig(Config):
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
     IMAGES_PER_GPU = 4
-
-    # Number of classes
-    NUM_CLASSES = 2
 
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
