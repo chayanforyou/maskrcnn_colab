@@ -41,7 +41,6 @@ if not os.path.exists(COCO_MODEL_PATH):
 
 class CustomConfig(Config):
     def __init__(self, num_classes):
-        classes_number = num_classes
         super().__init__()
     """Configuration for training on the toy shapes dataset.
     Derives from the base Config class and overrides values specific
@@ -56,7 +55,7 @@ class CustomConfig(Config):
     IMAGES_PER_GPU = 4
 
     # Number of classes
-    NUM_CLASSES = 1
+    NUM_CLASSES = num_classes
 
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
@@ -375,11 +374,10 @@ def load_ground_truth(annotation_path, dataset_path):
 # Passing layers="heads" freezes all layers except the head
 # layers. You can also pass a regular expression to select
 # which layers to train by name pattern.
-def train_head(model, dataset_train, dataset_val, config):
+def train_head(model, dataset_train, dataset_val, config, epochs=5, layers='heads'):
     model.train(dataset_train, dataset_val,
             learning_rate=config.LEARNING_RATE,
-            epochs=5,
-            layers='heads')
+            epochs, layers)
 
 
 """ DETECTION TEST YOUR MODEL """
