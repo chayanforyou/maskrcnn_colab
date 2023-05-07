@@ -377,7 +377,8 @@ def load_ground_truth(annotation_path, dataset_path):
 def train_head(model, dataset_train, dataset_val, config, epochs=5, layers='heads'):
     model.train(dataset_train, dataset_val,
             learning_rate=config.LEARNING_RATE,
-            epochs, layers)
+            epochs=epochs,
+            layers=layers)
 
 
 """ DETECTION TEST YOUR MODEL """
